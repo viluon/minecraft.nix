@@ -116,10 +116,23 @@ in {
         };
         auth = {
           deps = [ "parseRunnerArgs" ];
-          text = let json = "${jq}/bin/jq --raw-output";
+          text = let
+            username = "player";
+            getUUID = writePython3 "getUUID" {
+              libraries = with pkgs.python3Packages; [
+              ]
+            } ''
+              import hashlib
+
+              data = hashlib.md5(("OfflinePlayer:${username}").encode('utf-8')).digest()
+              data = bytearray(data)
+              data[6] = data[6] & 0x0f | 0x30
+              data[8] = data[8] & 0x3f | 0x80
+              print(str(data))
+            ''
           in ''
-            UUID=$(${json} '.["id"]' "$PROFILE")
-            USER_NAME=$(${json} '.["name"]' "$PROFILE")
+            UUID=$(${getUUID})
+            USER_NAME="${username}"
             ACCESS_TOKEN="0"
           '';
         };
