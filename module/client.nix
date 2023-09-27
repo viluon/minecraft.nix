@@ -31,6 +31,10 @@ in {
 
   options = {
     # Interface
+    username = mkOption {
+      type = singleLineStr;
+      description = "The player's username.";
+    };
     mods = mkOption {
       type = listOf jarPath;
       description = "List of mods load by the game.";
@@ -117,14 +121,13 @@ in {
         auth = {
           deps = [ "parseRunnerArgs" ];
           text = let
-            username = "player";
             getUUID = writePython3 "getUUID" {
               libraries = with pkgs.python3Packages; [
               ];
             } ''
               import hashlib
 
-              data = hashlib.md5(("OfflinePlayer:${username}").encode('utf-8')).digest()
+              data = hashlib.md5(("OfflinePlayer:${config.username}").encode('utf-8')).digest()
               data = bytearray(data)
               data[6] = data[6] & 0x0f | 0x30
               data[8] = data[8] & 0x3f | 0x80
@@ -132,7 +135,7 @@ in {
             '';
           in ''
             UUID=$(${getUUID})
-            USER_NAME="${username}"
+            USER_NAME="${config.username}"
             ACCESS_TOKEN="0"
           '';
         };
