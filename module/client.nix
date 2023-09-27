@@ -129,7 +129,7 @@ in {
               data[6] = data[6] & 0x0f | 0x30
               data[8] = data[8] & 0x3f | 0x80
               print(str(data))
-            ''
+            '';
           in ''
             UUID=$(${getUUID})
             USER_NAME="${username}"
