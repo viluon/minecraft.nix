@@ -117,7 +117,7 @@ in {
             username = "player";
             getUUID = writePython3 "getUUID" {
               libraries = with pkgs.python3Packages; [
-              ]
+              ];
             } ''
               import hashlib
 
