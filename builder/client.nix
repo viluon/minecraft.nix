@@ -1,4 +1,4 @@
-{ pkgs, lib, authClientID, OS }:
+{ pkgs, lib, OS }:
 with lib;
 let
   inherit (pkgs) fetchurl libpulseaudio libGL flite alsa-lib unzip runCommand;
@@ -66,7 +66,6 @@ let
           true;
       artifacts = lib.filter isAllowed versionInfo.libraries;
     in {
-      inherit authClientID;
       version = versionInfo.id;
       java = mkDefault (defaultJavaVersion versionInfo);
       libraries.java = buildVanillaLibraries artifacts ++ [ client ];

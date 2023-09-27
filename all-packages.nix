@@ -1,11 +1,11 @@
-{ pkgs ? import <nixpkgs> { }, lib ? pkgs.lib, authClientID, metadata
+{ pkgs ? import <nixpkgs> { }, lib ? pkgs.lib, metadata
 , OS ? "linux" }:
 with lib;
 let
   extendedLib = lib.extend (import ./common.nix { inherit pkgs lib metadata; });
   client = import ./builder/client.nix {
     lib = extendedLib;
-    inherit pkgs authClientID OS;
+    inherit pkgs OS;
   };
   server = import ./builder/server.nix {
     lib = extendedLib;
