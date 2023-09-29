@@ -145,6 +145,7 @@ in {
       path = mkIf (!(versionAtLeast config.version "1.13")) [ xorg.xrandr ];
       gameExecution = let libPath = makeLibraryPath config.libraries.preload;
       in ''
+        set -x
         export LD_LIBRARY_PATH="${libPath}''${LD_LIBRARY_PATH:+':'}''${LD_LIBRARY_PATH:-}"
         exec "${config.java}" \
           -Djava.library.path='${
